@@ -16,8 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     $name     = Clean($_POST['name']);
     $email    = Clean($_POST['email']);
-    $password = Clean($_POST['password']);
-
+    $password = $_POST['password'];
+    $adress     = Clean($_POST['adress']);
+    $gender     = $_POST['gender'];
+    $linkedin     = $_POST['linkedin'];
    
     # Errors Array ... 
     $errors = []; 
@@ -38,8 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if(empty($password)){
         $errors['Password']  = "Required Field"; 
     }elseif(strlen($password) < 6){
-        $errors['Password']  = "Length Must Be >= 6 Chars"; 
+        $errors['Password']  = "Password Length Must Be >= 6 Chars"; 
     }
+
+    # Validate Password .... 
+    if(empty($password)){
+          $errors['Password']  = "Required Field"; 
+     }elseif(strlen($password) < 6){
+          $errors['Password']  = "Password Length Must Be >= 6 Chars"; 
+     }
 
    # Check Errors ...... 
    if(count($errors) > 0 ){
@@ -62,32 +71,32 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // CODE ..... 
 
-    if (!empty($_FILES['image']['name'])) {
+    if (!empty($_FILES['pdf']['name'])) {
 
-        $imgName    = $_FILES['image']['name'];
-        $imgTemName = $_FILES['image']['tmp_name'];
-        $imgType    = $_FILES['image']['type'];
-        $imgSize    = $_FILES['image']['size'];
+        $imgName    = $_FILES['pdf']['name'];
+        $imgTemName = $_FILES['pdf']['tmp_name'];
+        $imgType    = $_FILES['pdf']['type'];
+        $imgSize    = $_FILES['pdf']['size'];
 
         # Allowed Extensions 
-        $allowedExtensions = ['jpg', 'png'];
+        $allowedExtensions = ['pdf'];
 
         $imgArray = explode('/', $imgType);
 
-        # Image Extension ...... 
-        $imageExtension = end($imgArray);
+        # pdf Extension ...... 
+        $pdfExtension = end($imgArray);
 
 
-        if (in_array($imageExtension, $allowedExtensions)) {
+        if (in_array($pdfExtension, $allowedExtensions)) {
 
-            # IMage New Name ...... 
-            $FinalName = time() . rand() . '.' . $imageExtension;
+            # pdf New Name ...... 
+            $FinalName = time() . rand() . '.' . $pdfExtension;
 
             $disPath = 'uploads/' . $FinalName;
 
 
             if (move_uploaded_file($imgTemName, $disPath)) {
-                echo 'Image Uploaded Succ ';
+                echo 'pdf Uploaded Succ ';
             } else {
                 echo 'Error try Again';
             }
@@ -95,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             echo 'InValid Extension .... ';
         }
     } else {
-        echo '<p class="Gsuss">* Image Required</p>';
+        echo '<p class="Gsuss">* pdf Required</p>';
     }
 }
 
@@ -165,8 +174,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </div>  
 
             <div class="form-group">
-                <label for="exampleInputName">Image</label>
-                <input type="file" name="image">
+                <label for="exampleInputName">Upload Your CV</label>
+                <input type="file" name="pdf">
             </div>
             
             <button type="submit" class="btn btn-primary">Submit</button>
