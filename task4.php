@@ -27,7 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     # Validate Name ..... 
     if(empty($name)){
         $errors['Name'] = "Required Field ";
-    }
+    }/* else{
+         //$alpha = ['a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'];
+         //$mName = explode('',$name);
+    } */
 
     # Validate Email ... 
     if(empty($email)){
@@ -35,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)){
         $errors['Email']  = "Invalid Format"; 
     }
+    
 
     # Validate Password .... 
     if(empty($password)){
@@ -43,11 +47,25 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $errors['Password']  = "Password Length Must Be >= 6 Chars"; 
     }
 
-    # Validate Password .... 
-    if(empty($password)){
-          $errors['Password']  = "Required Field"; 
-     }elseif(strlen($password) < 6){
-          $errors['Password']  = "Password Length Must Be >= 6 Chars"; 
+    # Validate Adress .... 
+    if(empty($adress)){
+          $errors['adress']  = "Required Field"; 
+     }elseif(strlen($adress) < 10){
+          $errors['adress']  = "Adress Length Must Be >= 10 Chars"; 
+     }
+
+    # Validate Gender .... 
+    if(empty($gender)){
+          $errors['gender']  = "<p class='Ralert'>Not Valide Gender Choose</p>"; 
+     }elseif($gender = 'male' or $gender = 'female'){
+          echo '<p class="Gsuss">Valide Gender Choose</p>';
+     }
+
+    # Validate linkedin ... 
+    if(empty($linkedin)){
+          $errors['linkedin']  = "Required Field"; 
+     }elseif(!filter_var($linkedin,FILTER_VALIDATE_URL)){
+          $errors['linkedin']  = "Invalid Format"; 
      }
 
    # Check Errors ...... 
@@ -57,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
            echo '* '.$key.' : '.$value.'<br>';
        }
    }else{
-       echo 'Name : '.$name.'<br>'.' Email : '.$email;
+       echo '<p class="Gsuss">data registered Sucssesfully</p>';
    }
 
 
