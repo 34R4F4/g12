@@ -62,10 +62,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
      }
 
     # Validate linkedin ... 
+    $inUrl = explode('.com/',$linkedin);
     if(empty($linkedin)){
           $errors['linkedin']  = "Required Field"; 
      }elseif(!filter_var($linkedin,FILTER_VALIDATE_URL)){
           $errors['linkedin']  = "Invalid Format"; 
+     }elseif ($inUrl[0] == "http://www.linkedin" or $inUrl[0] == "http://linkedin" or $inUrl[0] == "https://www.linkedin" or $inUrl[0] == "https://linkedin") {
+          $errors['linkedin']  = "<p class='Gsuss'>valid linked in</p>";
+     }else{
+          $errors['linkedin']  = "<p class='Ralert'>NOT valid linked in</p>";
      }
 
    # Check Errors ...... 
@@ -159,6 +164,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <div class="form-group">
                 <label for="exampleInputName">Name</label>
                 <input type="text" class="form-control" id="exampleInputName" aria-describedby=""   name="name" placeholder="Enter Name">
+                <?php
+                if(isset($errors['Name'])){
+                     echo $errors['Name'];
+                } ?>
             </div>
 
 
@@ -187,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </div> 
 
             <div class="form-group">
-                <label for="exampleLinkedURL">Adress</label>
+                <label for="exampleLinkedURL">LinkedIn URL</label>
                 <input type="text" class="form-control" id="exampleLinkedURL" aria-describedby=""   name="linkedin" placeholder="Enter LinkedIn URL">
             </div>  
 
