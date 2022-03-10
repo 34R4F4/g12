@@ -10,7 +10,9 @@
    //     return  stripslashes(strip_tags(trim($input)));
    }
 
-
+    # Errors Array ... 
+    $errors = []; 
+    
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
@@ -21,23 +23,28 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $gender     = $_POST['gender'];
     $linkedin     = $_POST['linkedin'];
    
-    # Errors Array ... 
-    $errors = []; 
-    
+
     # Validate Name ..... 
     if(empty($name)){
         $errors['Name'] = "Required Field ";
-    }/* else{
+    }elseif(is_int($name)){
+          $errors['Name']  = "<p class='Ralert'>NotValid Name</p>"; 
+     }else{
+          $errors['Name']  = "<p class='Gsuss'>Valid Name</p>"; 
+     }
+    /* else{
          //$alpha = ['a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'];
          //$mName = explode('',$name);
     } */
 
     # Validate Email ... 
     if(empty($email)){
-        $errors['Email']  = "Required Field"; 
+        $errors['Email']  = "<p class='Ralert'>Email Required</p>"; 
     }elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)){
-        $errors['Email']  = "Invalid Format"; 
-    }
+        $errors['Email']  = "<p class='Ralert'>Invalid Email Format</p>"; 
+    }elseif(filter_var($email,FILTER_VALIDATE_EMAIL)){
+          $errors['Email']  = "<p class='Gsuss'>Valid Email</p>"; 
+     }
     
 
     # Validate Password .... 
@@ -49,14 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     # Validate Adress .... 
     if(empty($adress)){
-          $errors['adress']  = "Required Field"; 
+          $errors['Adress']  = "Required Field"; 
      }elseif(strlen($adress) < 10){
-          $errors['adress']  = "Adress Length Must Be >= 10 Chars"; 
+          $errors['Adress']  = "Adress Length Must Be >= 10 Chars"; 
      }
 
     # Validate Gender .... 
     if(empty($gender)){
-          $errors['gender']  = "<p class='Ralert'>Not Valide Gender Choose</p>"; 
+          $errors['Gender']  = "<p class='Ralert'>Not Valide Gender Choose</p>"; 
      }elseif($gender = 'male' or $gender = 'female'){
           echo '<p class="Gsuss">Valide Gender Choose</p>';
      }
@@ -64,23 +71,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     # Validate linkedin ... 
     $inUrl = explode('.com/',$linkedin);
     if(empty($linkedin)){
-          $errors['linkedin']  = "Required Field"; 
+          $errors['Linkedin']  = "Required Field"; 
      }elseif(!filter_var($linkedin,FILTER_VALIDATE_URL)){
-          $errors['linkedin']  = "Invalid Format"; 
+          $errors['Linkedin']  = "Invalid Format"; 
      }elseif ($inUrl[0] == "http://www.linkedin" or $inUrl[0] == "http://linkedin" or $inUrl[0] == "https://www.linkedin" or $inUrl[0] == "https://linkedin") {
-          $errors['linkedin']  = "<p class='Gsuss'>valid linked in</p>";
+          $errors['Linkedin']  = "<p class='Gsuss'>valid linked in</p>";
      }else{
-          $errors['linkedin']  = "<p class='Ralert'>NOT valid linked in</p>";
+          $errors['Linkedin']  = "<p class='Ralert'>NOT valid linked in</p>";
      }
 
    # Check Errors ...... 
    if(count($errors) > 0 ){
-       foreach ($errors as $key => $value) {
+       /* foreach ($errors as $key => $value) {
            # code...
            echo '* '.$key.' : '.$value.'<br>';
-       }
+       } */
+       echo '<p class="Ralert">RegisterationFailed</p>';
    }else{
-       echo '<p class="Gsuss">data registered Sucssesfully</p>';
+       echo '<p class="Gsuss">Registered Sucssesfully</p>';
    }
 
 
@@ -164,16 +172,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <div class="form-group">
                 <label for="exampleInputName">Name</label>
                 <input type="text" class="form-control" id="exampleInputName" aria-describedby=""   name="name" placeholder="Enter Name">
-                <?php
-                if(isset($errors['Name'])){
-                     echo $errors['Name'];
-                } ?>
+                <?php if(isset($errors['Name'])) {echo $errors['Name'];} ?>
             </div>
 
 
             <div class="form-group">
                 <label for="exampleInputEmail">Email address</label>
                 <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="Enter email">
+                <?php if(isset($errors['Email'])) {echo $errors['Email'];} ?>
             </div>
 
             <div class="form-group">
